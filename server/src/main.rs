@@ -6,7 +6,6 @@ fn main() {
         println!("{}", card.card)
     }
 }
-#[derive(Debug)]
 struct Card {
     card: String,
     value: u8,
