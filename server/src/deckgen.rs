@@ -6,9 +6,9 @@ pub fn gen_deck() -> Vec<Card> {
     let suits: Vec<char> = vec!['♧', '♢', '♡', '♤'];
     for n in 1..8 as u8 {
         let num = find_num(n);
-        for s in suits.clone() {
-            let val: u8 = calc_val(num, s, n);
-            if !(num == '7' && (s == '♧' || s == '♤')) {
+        for s in &suits {
+            let val: u8 = calc_val(num, *s, n);
+            if !(num == '7' && (s == &'♧' || s == &'♤')) {
                 deck.push(Card {
                     card: format!("{num}{s}"),
                     value: val,
