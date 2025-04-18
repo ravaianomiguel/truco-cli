@@ -5,7 +5,7 @@ pub fn deal_cards(
     mut table: Vec<Card>,
     mut hands: Vec<Vec<Card>>,
 ) -> (Vec<Card>, Vec<Card>, Vec<Vec<Card>>) {
-    for hand in  hands.iter_mut() {
+    for hand in  &mut hands {
         let opt: String = prompt("quer ou queima").unwrap();
         let mut transfer: Vec<Card> = Vec::new();
         if opt == "1" {
