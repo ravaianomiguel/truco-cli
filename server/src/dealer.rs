@@ -5,24 +5,26 @@ pub fn deal_cards(
     mut table: Vec<Card>,
     mut hands: Vec<Vec<Card>>,
 ) -> (Vec<Card>, Vec<Card>, Vec<Vec<Card>>) {
-    for hand in &mut hands {
+    for hand in  hands.iter_mut() {
         let opt: String = prompt("quer ou queima").unwrap();
         let mut transfer: Vec<Card> = Vec::new();
         if opt == "1" {
-            (table, deck) = give_cards(table, deck)
+            deck = table.recieve_cards(deck)
         }
-        (transfer, deck) = give_cards(transfer, deck);
-        for card in transfer {
+        deck = transfer.recieve_cards(deck);
+        for card in &transfer {
             print!("{}  ", card.card)
         }
         print!("\n");
         if prompt("familia").unwrap() {
-            if familia(transfer) {
-                (table, transfer) = give_cards(table, transfer);
-                (hand, deck) = give_cards(hand, deck)
+            if familia(&transfer) {
+                table.recieve_cards(transfer);
+                deck = hand.recieve_cards(deck)
             } else {
-                (hand, transfer) = give_cards(hand, transfer)
+                hand.recieve_cards(transfer);
             }
+        } else {
+            hand.recieve_cards(transfer);
         }
     }
     print_cards(&table, &hands);
@@ -43,17 +45,22 @@ fn print_cards(table: &Vec<Card>, hands: &Vec<Vec<Card>>) {
     }
     print!("\n");
 }
-fn familia(transfer: Vec<Card>) -> bool {
-    for card in &transfer {
-        if card.value > 3 {
+fn familia(transfer: &Vec<Card>) -> bool {
+    for card in transfer {
+        if card.value > 4 && card.card != "A♤" {
             return false;
         }
     }
     true
 }
-fn give_cards(mut target: Vec<Card>, mut source: Vec<Card>) -> (Vec<card>, Vec<Card>) {
-    for _i in 1..4 {
-        target.push(source.pop().unwrap());
+trait RecieveCards {
+    fn recieve_cards(&mut self, source: Vec<Card>) -> Vec<Card>;
+}
+impl RecieveCards for Vec<Card> {
+    fn recieve_cards(&mut self, mut source: Vec<Card>) -> Vec<Card> {
+        for _i in 1..4 {
+            self.push(source.pop().unwrap());
+        };
+        source
     }
-    (target, source)
 }

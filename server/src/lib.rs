@@ -14,6 +14,7 @@ pub fn get_player_count() -> Vec<Vec<Card>> {
     }
     hands
 }
+#[derive(Debug, Clone)]
 pub struct Card {
     pub card: String,
     pub value: u8,
